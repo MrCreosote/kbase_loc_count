@@ -11,9 +11,9 @@ import sys
 import time
 
 
-_LANGS = ["Java", "Python", "Go", "JavaScript", "Perl"]
+_LANGS = ["Java", "Python", "Go", "JavaScript", "Perl", "C", "C Header", "C++", "PHP", "R", ]
 _URL = "https://api.codetabs.com/v1/loc/?github="
-_REQ_LIMIT_SEC = 5  # https://codetabs.com/count-loc/count-loc-online.html  
+_REQ_LIMIT_SEC = 6  # https://codetabs.com/count-loc/count-loc-online.html  +1 for fudge factor
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
                 repos.append(r)
     repos = sorted(set(repos))  # remove duplicates
     print(f"Repo count: {len(repos)}, estimated execution time "
-        + f"{len(repos) * (_REQ_LIMIT_SEC + 1)} sec")
+        + f"{len(repos) * (_REQ_LIMIT_SEC)} sec")
     totals = defaultdict(int)
     ignored = set()
     for r in repos:
@@ -47,7 +47,7 @@ def main():
             totals[l] += count
             print(f"\t{l}: {count}")
         print(f"\tTotal: {totalcount}")
-        wait = _REQ_LIMIT_SEC - time.time() + t + 1  # engineering fudge factor
+        wait = _REQ_LIMIT_SEC - time.time() + t
         if wait > 0:
             time.sleep(wait)
     print("Totals:")
@@ -56,7 +56,7 @@ def main():
         totalcount += totals[l]
         print(f"\t{l}: {totals[l]}")
     print(f"\tTotal: {totalcount}")
-    print(f"Ignored items: {','.join(sorted(ignored))}")
+    print(f"Ignored items: {', '.join(sorted(ignored))}")
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ kbase/kb_sdk
 kbase/workspace_deluxe
 kbase/auth
 kbase/groups
+kbase/blobstore
 kbase/execution_engine2
 kbase/catalog
 kbase/narrative_method_store
