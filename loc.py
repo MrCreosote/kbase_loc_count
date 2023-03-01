@@ -11,14 +11,30 @@ import sys
 import time
 
 
-_LANGS = ["Java", "Python", "Go", "JavaScript", "Perl", "C", "C Header", "C++", "PHP", "R", ]
+_LANGS = {"Java", "Python", "Go", "JavaScript", "Perl", "C", "C Header", "C++", "PHP", "R",
+          "Ruby", "TypeScript"}
 _URL = "https://api.codetabs.com/v1/loc/?github="
 _REQ_LIMIT_SEC = 6  # https://codetabs.com/count-loc/count-loc-online.html  +1 for fudge factor
+_RETRY_DELAY = [6, 12, 18, 24]
+
+
+def get_response(repo):
+    exp = None
+    for t in _RETRY_DELAY:
+        try:
+            res = requests.get(_URL + repo)
+            if not res.ok:
+                print(res.text, file=sys.stderr)
+                res.raise_for_status()
+            return res
+        except Exception as e:
+            exp = e
+            print(f"Retrying in {t} sec: {str(e)}", file=sys.stderr)
+            time.sleep(t)
+    raise exp
 
 
 def main():
-    langs = sorted(_LANGS)
-    set_langs = set(langs)
     with open(sys.argv[1]) as repofile:
         repos = []
         for r in repofile:
@@ -32,16 +48,13 @@ def main():
     ignored = set()
     for r in repos:
         print(r)
-        t = time.time()
-        res = requests.get(_URL + r)
-        if not res.ok:
-            print(res.text)
-            res.raise_for_status()
+        t = time.time()  # TODO move this into get_response and return the last request time
+        res = get_response(r)
         res = {r["language"]: r for r in res.json()}
-        ignored.update({l for l in res if l not in set_langs})
-        res = {l: res[l] for l in langs if l in res}
+        ignored.update({l for l in res if l not in _LANGS})
+        res = {l: res[l] for l in _LANGS if l in res}
         totalcount = 0
-        for l in res:
+        for l in sorted(res):
             count = res[l]["linesOfCode"] + res[l]["comments"]
             totalcount += count
             totals[l] += count
@@ -52,11 +65,11 @@ def main():
             time.sleep(wait)
     print("Totals:")
     totalcount = 0
-    for l in totals:
+    for l in sorted(totals):
         totalcount += totals[l]
         print(f"\t{l}: {totals[l]}")
     print(f"\tTotal: {totalcount}")
-    print(f"Ignored items: {', '.join(sorted(ignored))}")
+    print(f"Ignored fields: {', '.join(sorted(ignored))}")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,31 @@
-# TODO UI repos
+# TODO check UI repos w/ Erik
+kbase/kbase-ui 
+kbase/kbase-ui-plugin-catalog 
+kbase/kbase-ui-plugin-feeds 
+kbase/kbase-ui-plugin-react-profile-view 
+kbase/kbase-ui-plugin-samples 
+kbase/kbase-ui-plugin-jgi-search 
+kbase/kbase-ui-plugin-typeview 
+kbase/kbase-ui-plugin-organizations 
+kbase/kbase-ui-plugin-dataview 
+kbase/kbase-ui-plugin-auth2-client 
+kbase/kbase-ui-plugin-biochem-search 
+kbase/kbase-ui-plugin-dashboard 
+kbase/kbase-ui-plugin-user-profile 
+kbase/kbase-ui-plugin-job-browser2 
+kbase/kbase-ui-plugin-public-search 
+kbase/kbase-ui-plugin-data-search 
+kbase/ui-assets 
+kbase/kbase-ui-plugin-ontology 
+kbase/kbase-ui-plugin-taxonomy 
+kbase/kbase-ui-widget 
+kbase/kbase-ui-plugin-data-landing-pages 
+kbase/kbase-ui-plugin-ui-service 
+kbase/kbase-ui-plugin-report-viewer 
+kbase/kbase-ui-plugin-datawidgets 
+kbase/kbase-ui-plugin-vis-widgets 
+kbase/kbase-ui-plugin-methodview 
+kbase/kbase-ui-plugin-jgi-import 
 
 # Support modules
 kbase/auth
