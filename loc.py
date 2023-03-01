@@ -22,11 +22,12 @@ def get_response(repo):
     exp = None
     for t in _RETRY_DELAY:
         try:
+            start = time.time()
             res = requests.get(_URL + repo)
             if not res.ok:
                 print(res.text, file=sys.stderr)
                 res.raise_for_status()
-            return res
+            return res, start
         except Exception as e:
             exp = e
             print(f"Retrying in {t} sec: {str(e)}", file=sys.stderr)
@@ -48,8 +49,7 @@ def main():
     ignored = set()
     for r in repos:
         print(r)
-        t = time.time()  # TODO move this into get_response and return the last request time
-        res = get_response(r)
+        res, t = get_response(r)
         res = {r["language"]: r for r in res.json()}
         ignored.update({l for l in res if l not in _LANGS})
         res = {l: res[l] for l in _LANGS if l in res}
