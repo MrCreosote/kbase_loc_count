@@ -1,4 +1,4 @@
-# TODO check UI repos w/ Erik
+# UI repos
 kbase/kbase-ui 
 kbase/kbase-ui-plugin-auth2-client
 kbase/kbase-ui-plugin-biochem-search
